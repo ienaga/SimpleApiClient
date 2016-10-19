@@ -2,6 +2,11 @@
 
 simple api library.
 
+[![Build Status](https://travis-ci.org/ienaga/SimpleApi.svg?branch=master)](https://travis-ci.org/ienaga/SimpleApi)
+
+[![Latest Stable Version](https://poser.pugx.org/ienaga/simple-api/v/stable)](https://packagist.org/packages/ienaga/simple-api) [![Total Downloads](https://poser.pugx.org/ienaga/simple-api/downloads)](https://packagist.org/packages/ienaga/simple-api) [![Latest Unstable Version](https://poser.pugx.org/ienaga/simple-api/v/unstable)](https://packagist.org/packages/ienaga/simple-api) [![License](https://poser.pugx.org/ienaga/simple-api/license)](https://packagist.org/packages/ienaga/simple-api)
+
+
 # Composer
 
 ```json
