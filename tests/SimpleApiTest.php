@@ -7,7 +7,10 @@ require_once __DIR__ . "/../src/api/SimpleApi.php";
 class SimpleApiTest extends \PHPUnit_Framework_TestCase
 {
 
-    const END_POINT = "https://jsonplaceholder.typicode.com";
+    /**
+     * @var string
+     */
+    const END_POINT = "https://private-f8e3e3-simpleapitest.apiary-mock.com/test";
 
     /**
      * @var array
@@ -15,6 +18,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     private $config = array(
         "time_out"         => 10,
         "connect_time_out" => 5,
+        "end_point"        => self::END_POINT,
         "method"           => "GET",
         "content_type"     => "application/json"
     );
@@ -26,10 +30,9 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi
-            ->setEndPoint(self::END_POINT. "/posts/1")
             ->execute();
 
-        $this->assertEquals($json->id, 1);
+        $this->assertEquals($json->get, "OK");
 
     }
 
@@ -40,12 +43,11 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi
-            ->setEndPoint(self::END_POINT. "/posts")
             ->setMethod("POST")
-            ->add("key", "value")
+            ->add("post", "test")
             ->execute();
 
-        $this->assertEquals($json->id, 101);
+        $this->assertEquals($json->post, "OK");
     }
 
     /**
@@ -55,11 +57,10 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi
-            ->setEndPoint(self::END_POINT. "/posts")
             ->setMethod("POST")
             ->execute();
 
-        $this->assertEquals($json->id, 101);
+        $this->assertEquals($json->post, "OK");
     }
 
     /**
@@ -69,11 +70,10 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi
-            ->setEndPoint(self::END_POINT. "/posts/1")
             ->setMethod("PUT")
             ->execute();
 
-        $this->assertEquals($json->id, 1);
+        $this->assertEquals($json->put, "OK");
     }
 
     /**
@@ -83,11 +83,10 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi
-            ->setEndPoint(self::END_POINT. "/posts/1")
             ->setMethod("DELETE")
             ->execute();
 
-        $this->assertTrue($json instanceof stdClass);
+        $this->assertEquals($json->delete, "OK");
     }
 
 }
