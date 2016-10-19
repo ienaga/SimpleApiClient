@@ -49,7 +49,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * post method test2
+     * post method test
      */
     public function testEmptyBodyPostExecute()
     {
