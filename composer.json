@@ -1,0 +1,22 @@
+{
+    "name": "ienaga/simple-api",
+    "homepage": "https://github.com/ienaga/SimpleApi",
+    "description": "simple api library.",
+    "keywords": [ "api", "simple" ],
+    "type": "library",
+    "license": "MIT",
+    "authors":[
+        {
+            "name": "Toshiyuki Ienaga",
+            "email": "ienaga@tvon.jp"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\": "src/"
+        }
+    }
+}
