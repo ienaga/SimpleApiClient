@@ -25,17 +25,15 @@ simple api library.
 $config = [
     "time_out"         => 10, // default 10
     "connect_time_out" => 5, // default 5
-    "end_point"        => "https://end_point",
     "method"           => "POST",  // default GET
     "content_type"     => "application/json"  // default application/json
 ];
 ```
 
-
 ## GET
 
 ```php
-$simpleApi = new \Api\SimpleApi($config);
+$simpleApi = new \Api\SimpleApi();
 $json = $simpleApi
     ->setEndPoint("https://end_point")
     ->execute();
@@ -44,7 +42,7 @@ $json = $simpleApi
 ## POST
 
 ```php
-$simpleApi = new \Api\SimpleApi($config);
+$simpleApi = new \Api\SimpleApi();
 $json = $simpleApi
     ->addHeader("Authorization", "key=XXXXXXX")
     ->setEndPoint("https://fcm.googleapis.com/fcm/send")
@@ -52,10 +50,34 @@ $json = $simpleApi
     ->add("to", "INSTANCE_ID")
     ->add("priority", "high")
     ->add("content_available", true)
-    ->add("notification", array(
+    ->add("notification", [
         "title" => "title", 
         "body"  => "body", 
-        "badge" => 1)
-    )
+        "badge" => 1
+    ])
+    ->execute();
+```
+
+## PUT
+
+```php
+$simpleApi = new \Api\SimpleApi();
+$json = $simpleApi
+    ->addHeader("Authorization", "token=XXXXXXX")
+    ->setEndPoint("https://end_point")
+    ->setMethod("PUT")
+    ->add("data", [
+        "status" => 2
+    ])
+    ->execute();
+```
+
+## DELETE
+
+```php
+$simpleApi = new \Api\SimpleApi();
+$json = $simpleApi
+    ->setEndPoint("https://end_point")
+    ->setMethod("PUT")
     ->execute();
 ```

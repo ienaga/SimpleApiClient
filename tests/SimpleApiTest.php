@@ -53,7 +53,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
     /**
      * post method test
      */
-    public function testEmptyBodyPostExecute()
+    public function testEmptyRowBodyPostExecute()
     {
         $simpleApi = new \Api\SimpleApi($this->config);
         $json = $simpleApi

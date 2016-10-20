@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Api;
-
 
 interface SimpleApiInterface
 {

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Api;
 
 require_once __DIR__ . "/SimpleApiInterface.php";
@@ -293,14 +292,12 @@ class SimpleApi implements SimpleApiInterface
         // query
         switch ($this->getMethod()) {
             case "POST":
-            case "PUT":
-
+            case "PUT" :
                 if (count($this->getParameters()) > 0) {
                     $this
                         ->addOption(CURLOPT_POST,       true)
                         ->addOption(CURLOPT_POSTFIELDS, $this->createJson());
                 }
-
                 break;
         }
 
@@ -309,13 +306,9 @@ class SimpleApi implements SimpleApiInterface
 
         // execute
         try {
-
             $json = json_decode(curl_exec($curl));
-
         } catch (ApiException $e) {
-
             $json = json_decode(array("exception" => $e->getMessage()));
-
         }
 
         curl_close($curl);
