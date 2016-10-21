@@ -273,6 +273,18 @@ class SimpleApi implements SimpleApiInterface
     }
 
     /**
+     * @param  string $path
+     * @return $this
+     */
+    public function setPem($path = "")
+    {
+        $this
+            ->addOption(CURLOPT_SSL_VERIFYPEER, true)
+            ->addOption(CURLOPT_CAINFO,         $path);
+        return $this;
+    }
+
+    /**
      * execute
      */
     public function execute()
