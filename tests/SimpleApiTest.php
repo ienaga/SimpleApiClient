@@ -32,7 +32,8 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
         $json = $simpleApi
             ->execute();
 
-        $this->assertEquals($json->get, "OK");
+        $this->assertArrayHasKey("get", $json);
+        $this->assertEquals($json["get"], "OK");
 
     }
 
@@ -47,7 +48,8 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
             ->add("post", "test")
             ->execute();
 
-        $this->assertEquals($json->post, "OK");
+        $this->assertArrayHasKey("post", $json);
+        $this->assertEquals($json["post"], "OK");
     }
 
     /**
@@ -60,7 +62,8 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
             ->setMethod("POST")
             ->execute();
 
-        $this->assertEquals($json->post, "OK");
+        $this->assertArrayHasKey("post", $json);
+        $this->assertEquals($json["post"], "OK");
     }
 
     /**
@@ -73,7 +76,8 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
             ->setMethod("PUT")
             ->execute();
 
-        $this->assertEquals($json->put, "OK");
+        $this->assertArrayHasKey("put", $json);
+        $this->assertEquals($json["put"], "OK");
     }
 
     /**
@@ -86,7 +90,8 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
             ->setMethod("DELETE")
             ->execute();
 
-        $this->assertEquals($json->delete, "OK");
+        $this->assertArrayHasKey("delete", $json);
+        $this->assertEquals($json["delete"], "OK");
     }
 
 }
