@@ -318,9 +318,9 @@ class SimpleApi implements SimpleApiInterface
 
         // execute
         try {
-            $json = json_decode(curl_exec($curl));
+            $json = json_decode(curl_exec($curl), true);
         } catch (ApiException $e) {
-            $json = json_decode(array("exception" => $e->getMessage()));
+            $json = json_decode(json_encode(array("exception" => $e->getMessage())), true);
         }
 
         curl_close($curl);
