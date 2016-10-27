@@ -34,6 +34,11 @@ class SimpleApi implements SimpleApiInterface
     protected $content_type = "application/json";
 
     /**
+     * @var string
+     */
+    protected $charset = "UTF-8";
+
+    /**
      * @var array
      */
     protected $headers = array();
@@ -79,6 +84,11 @@ class SimpleApi implements SimpleApiInterface
         if (isset($config["content_type"])) {
             $this->setContentType($config["content_type"]);
         }
+
+        // charset
+        if (isset($config["charset"])) {
+            $this->setCharset($config["charset"]);
+        }
     }
 
     /**
@@ -96,6 +106,24 @@ class SimpleApi implements SimpleApiInterface
     public function setContentType($content_type = "application/json")
     {
         $this->content_type = $content_type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCharset()
+    {
+        return $this->charset;
+    }
+
+    /**
+     * @param  string $charset
+     * @return $this
+     */
+    public function setCharset($charset)
+    {
+        $this->charset = $charset;
         return $this;
     }
 
@@ -294,6 +322,7 @@ class SimpleApi implements SimpleApiInterface
         // init
         $this
             ->addHeader("Content-Type",         trim($this->getContentType()))
+            ->addOption(CURLOPT_ENCODING,       $this->getCharset())
             ->addOption(CURLOPT_TIMEOUT,        $this->getTimeOut())
             ->addOption(CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeOut())
             ->addOption(CURLOPT_RETURNTRANSFER, true)
@@ -306,9 +335,11 @@ class SimpleApi implements SimpleApiInterface
             case "POST":
             case "PUT" :
                 if (count($this->getParameters()) > 0) {
+                    $sendData = $this->createJson();
                     $this
+                        ->addHeader("Content-length",   strlen($sendData))
                         ->addOption(CURLOPT_POST,       true)
-                        ->addOption(CURLOPT_POSTFIELDS, $this->createJson());
+                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
                 }
                 break;
         }
