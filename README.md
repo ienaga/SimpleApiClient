@@ -19,16 +19,6 @@ simple api library.
 
 # Usage
 
-## CONFIG
-
-```php
-$config = [
-    "time_out"         => 10, // default 10
-    "connect_time_out" => 5, // default 5
-    "method"           => "POST",  // default GET
-    "content_type"     => "application/json"  // default application/json
-];
-```
 
 ## GET
 
@@ -78,6 +68,6 @@ $json = $simpleApi
 $simpleApi = new \Api\SimpleApi();
 $json = $simpleApi
     ->setEndPoint("https://end_point")
-    ->setMethod("PUT")
+    ->setMethod("DELETE")
     ->execute();
 ```
