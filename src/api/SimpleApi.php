@@ -1,17 +1,22 @@
 <?php
 
-namespace Api;
+namespace SimpleApi;
 
 require_once __DIR__ . "/SimpleApiInterface.php";
 require_once __DIR__ . "/../exception/ApiException.php";
 
-class SimpleApi implements SimpleApiInterface
+class Client implements SimpleApiInterface
 {
 
     /**
      * @var string
      */
     protected $end_point = "";
+
+    /**
+     * @var string
+     */
+    protected $path = "";
 
     /**
      * @var string
@@ -52,6 +57,16 @@ class SimpleApi implements SimpleApiInterface
      * @var array
      */
     protected $parameters = array();
+
+    /**
+     * @var null
+     */
+    protected $mh = null;
+
+    /**
+     * @var array
+     */
+    protected $curls = array();
 
 
     /**
@@ -164,6 +179,24 @@ class SimpleApi implements SimpleApiInterface
     }
 
     /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param  string $path
+     * @return $this
+     */
+    public function setPath(string $path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
      * @param  string $key
      * @param  mixed  $value
      * @return $this
@@ -180,6 +213,16 @@ class SimpleApi implements SimpleApiInterface
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * @param  array $parameters
+     * @return $this
+     */
+    public function setParameters($parameters = array())
+    {
+        $this->parameters = $parameters;
+        return $this;
     }
 
     /**
@@ -313,12 +356,22 @@ class SimpleApi implements SimpleApiInterface
     }
 
     /**
-     * execute
+     * @return string
      */
-    public function execute()
+    public function getURL()
     {
-        $curl = curl_init();
+        $url = $this->getEndPoint();
+        if ($this->getPath()) {
+            $url .= $this->getPath();
+        }
+        return $url;
+    }
 
+    /**
+     * @param $curl
+     */
+    public function preExecute($curl)
+    {
         // init
         $this
             ->addHeader("Content-Type",         trim($this->getContentType()))
@@ -326,7 +379,7 @@ class SimpleApi implements SimpleApiInterface
             ->addOption(CURLOPT_TIMEOUT,        $this->getTimeOut())
             ->addOption(CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeOut())
             ->addOption(CURLOPT_RETURNTRANSFER, true)
-            ->addOption(CURLOPT_URL,            $this->getEndPoint())
+            ->addOption(CURLOPT_URL,            $this->getURL())
             ->addOption(CURLOPT_CUSTOMREQUEST,  $this->getMethod())
             ->addOption(CURLOPT_HTTPHEADER,     $this->getHeaders());
 
@@ -344,8 +397,18 @@ class SimpleApi implements SimpleApiInterface
                 break;
         }
 
-        // set option
         curl_setopt_array($curl, $this->getOptions());
+    }
+
+    /**
+     * execute
+     */
+    public function execute()
+    {
+        $curl = curl_init();
+
+        // pre execute
+        $this->preExecute($curl);
 
         // execute
         try {
@@ -357,5 +420,45 @@ class SimpleApi implements SimpleApiInterface
         curl_close($curl);
 
         return $json;
+    }
+
+    /**
+     * add multi handle
+     */
+    public function addMulti()
+    {
+        if ($this->mh === null) {
+            $this->mh = curl_multi_init();
+        }
+
+        $curl = curl_init();
+
+        // pre execute
+        $this->preExecute($curl);
+
+        curl_multi_add_handle($this->mh, $curl);
+
+        $this->curls[] = $curl;
+    }
+
+    /**
+     * execute multi
+     */
+    public function multi()
+    {
+        $active = null;
+
+        do {
+            curl_multi_exec($this->mh, $active);
+        } while ($active);
+
+        // remove multi handle
+        foreach ($this->curls as $curl) {
+            curl_multi_remove_handle($this->mh, $curl);
+            curl_close($curl);
+        }
+
+        // close
+        curl_multi_close($this->mh);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Api;
+namespace SimpleApi;
 
 interface SimpleApiInterface
 {
