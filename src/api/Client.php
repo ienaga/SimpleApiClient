@@ -136,7 +136,7 @@ class Client implements ClientApiInterface
      * @param  string $charset
      * @return $this
      */
-    public function setCharset($charset)
+    public function setCharset($charset = "UTF-8")
     {
         $this->charset = $charset;
         return $this;
@@ -409,14 +409,12 @@ class Client implements ClientApiInterface
     {
         $curl = curl_init();
 
-        // pre execute
         $this->preSend($curl);
 
-        // execute
         try {
             $json = json_decode(curl_exec($curl), true);
         } catch (ApiException $e) {
-            $json = json_decode(json_encode(array("exception" => $e->getMessage())), true);
+            $json = array("exception" => $e->getMessage());
         }
 
         curl_close($curl);
@@ -427,7 +425,7 @@ class Client implements ClientApiInterface
     /**
      * add multi handle
      */
-    public function addMulti()
+    public function addHandle()
     {
         if ($this->mh === null) {
             $this->mh = curl_multi_init();
@@ -435,7 +433,6 @@ class Client implements ClientApiInterface
 
         $curl = curl_init();
 
-        // pre execute
         $this->preSend($curl);
 
         curl_multi_add_handle($this->mh, $curl);
@@ -460,7 +457,6 @@ class Client implements ClientApiInterface
             curl_close($curl);
         }
 
-        // close
         curl_multi_close($this->mh);
     }
 }

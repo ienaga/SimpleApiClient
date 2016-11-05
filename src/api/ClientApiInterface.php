@@ -17,8 +17,8 @@ interface ClientApiInterface
     public function preSend($curl);
 
     /**
-     * multi
-     *
+     * execute multi
      */
     public function multi();
+
 }
