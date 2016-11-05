@@ -181,7 +181,7 @@ class Client implements ClientApiInterface
     /**
      * @return string
      */
-    public function getPath(): string
+    public function getPath()
     {
         return $this->path;
     }
@@ -190,7 +190,7 @@ class Client implements ClientApiInterface
      * @param  string $path
      * @return $this
      */
-    public function setPath(string $path)
+    public function setPath($path = "")
     {
         $this->path = $path;
         return $this;
@@ -201,7 +201,7 @@ class Client implements ClientApiInterface
      * @param  mixed  $value
      * @return $this
      */
-    public function add($key, $value)
+    public function add($key, $value = "")
     {
         $this->parameters[$key] = $value;
         return $this;
@@ -368,9 +368,10 @@ class Client implements ClientApiInterface
     }
 
     /**
-     * @param $curl
+     * @param  $curl
+     * @return void
      */
-    public function preExecute($curl)
+    public function preSend($curl)
     {
         // init
         $this
@@ -401,14 +402,15 @@ class Client implements ClientApiInterface
     }
 
     /**
-     * execute
+     * send
+     * @return json
      */
-    public function execute()
+    public function send()
     {
         $curl = curl_init();
 
         // pre execute
-        $this->preExecute($curl);
+        $this->preSend($curl);
 
         // execute
         try {
@@ -434,7 +436,7 @@ class Client implements ClientApiInterface
         $curl = curl_init();
 
         // pre execute
-        $this->preExecute($curl);
+        $this->preSend($curl);
 
         curl_multi_add_handle($this->mh, $curl);
 

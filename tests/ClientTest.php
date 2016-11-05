@@ -30,7 +30,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
-            ->execute();
+            ->send();
 
         $this->assertArrayHasKey("get", $json);
         $this->assertEquals($json["get"], "OK");
@@ -46,7 +46,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $json = $simpleApi
             ->setMethod("POST")
             ->add("post", "test")
-            ->execute();
+            ->send();
 
         $this->assertArrayHasKey("post", $json);
         $this->assertEquals($json["post"], "OK");
@@ -60,7 +60,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("POST")
-            ->execute();
+            ->send();
 
         $this->assertArrayHasKey("post", $json);
         $this->assertEquals($json["post"], "OK");
@@ -74,7 +74,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("PUT")
-            ->execute();
+            ->send();
 
         $this->assertArrayHasKey("put", $json);
         $this->assertEquals($json["put"], "OK");
@@ -88,7 +88,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("DELETE")
-            ->execute();
+            ->send();
 
         $this->assertArrayHasKey("delete", $json);
         $this->assertEquals($json["delete"], "OK");

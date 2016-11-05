@@ -5,7 +5,20 @@ namespace SimpleApi;
 interface ClientApiInterface
 {
     /**
-     * execute
+     * send
+     * @return json
      */
-    public function execute();
+    public function send();
+
+    /**
+     * @param  $curl
+     * @return void
+     */
+    public function preSend($curl);
+
+    /**
+     * multi
+     *
+     */
+    public function multi();
 }
