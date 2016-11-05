@@ -1,10 +1,10 @@
 <?php
 
 
-require_once __DIR__ . "/../src/api/SimpleApi.php";
+require_once __DIR__ . "/../src/api/Client.php";
 
 
-class SimpleApiTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -28,7 +28,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetExecute()
     {
-        $simpleApi = new \Api\SimpleApi($this->config);
+        $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->execute();
 
@@ -42,7 +42,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostExecute()
     {
-        $simpleApi = new \Api\SimpleApi($this->config);
+        $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("POST")
             ->add("post", "test")
@@ -57,7 +57,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyRowBodyPostExecute()
     {
-        $simpleApi = new \Api\SimpleApi($this->config);
+        $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("POST")
             ->execute();
@@ -71,7 +71,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testPutExecute()
     {
-        $simpleApi = new \Api\SimpleApi($this->config);
+        $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("PUT")
             ->execute();
@@ -85,7 +85,7 @@ class SimpleApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteExecute()
     {
-        $simpleApi = new \Api\SimpleApi($this->config);
+        $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("DELETE")
             ->execute();

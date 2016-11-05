@@ -1,6 +1,6 @@
 {
-    "name": "ienaga/simple-api",
-    "homepage": "https://github.com/ienaga/SimpleApi",
+    "name": "ienaga/simple-api-client",
+    "homepage": "https://github.com/ienaga/SimpleApiClient",
     "description": "simple api library.",
     "keywords": [ "api", "simple" ],
     "type": "library",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Api\\": "src/"
+            "SimpleApi\\": "src/"
         }
     }
 }

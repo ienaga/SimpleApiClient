@@ -1,4 +1,4 @@
-# SimpleApi
+# SimpleApiClient
 
 simple api library.
 

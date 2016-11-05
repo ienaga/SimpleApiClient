@@ -2,10 +2,10 @@
 
 namespace SimpleApi;
 
-require_once __DIR__ . "/SimpleApiInterface.php";
+require_once __DIR__ . "/ClientApiInterface.php";
 require_once __DIR__ . "/../exception/ApiException.php";
 
-class Client implements SimpleApiInterface
+class Client implements ClientApiInterface
 {
 
     /**

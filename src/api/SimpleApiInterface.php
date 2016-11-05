@@ -2,7 +2,7 @@
 
 namespace SimpleApi;
 
-interface SimpleApiInterface
+interface ClientApiInterface
 {
     /**
      * execute
