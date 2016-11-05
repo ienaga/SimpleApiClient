@@ -2,7 +2,7 @@
     "name": "ienaga/simple-api-client",
     "homepage": "https://github.com/ienaga/SimpleApiClient",
     "description": "simple api library.",
-    "keywords": [ "api", "simple" ],
+    "keywords": [ "api", "aws", "ElasticSearch", "FireBase" ],
     "type": "library",
     "license": "MIT",
     "authors":[

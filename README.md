@@ -20,17 +20,17 @@ simple api library.
 # Usage
 
 
-## GET
+## GET (AWS ElasticSearch)
 
 ```php
 $client = new \SimpleApi\Client();
 $json = $client
     ->setEndPoint("https://search-****.ap-northeast-1.es.amazonaws.com")
     ->setPath("/index_name/type_name/_search?q=user:kimchy")
-    ->execute();
+    ->send();
 ```
 
-## POST
+## POST (Google FireBase)
 
 ```php
 $client = new \SimpleApi\Client();
@@ -46,23 +46,22 @@ $json = $client
         "body"  => "body", 
         "badge" => 1
     ])
-    ->execute();
+    ->send();
 ```
 
-## PUT
+## PUT (AWS ElasticSearch)
 
 ```php
 $client = new \SimpleApi\Client();
 $json = $client
-    ->addHeader("Authorization", "token=XXXXXXX")
     ->setEndPoint("https://search-****.ap-northeast-1.es.amazonaws.com")
     ->setPath("/index_name/type_name")
     ->setMethod("PUT")
     ->add("status", 2)
-    ->execute();
+    ->send();
 ```
 
-## DELETE
+## DELETE (AWS ElasticSearch)
 
 ```php
 $client = new \SimpleApi\Client();
@@ -70,5 +69,5 @@ $json = $client
     ->setEndPoint("https://search-****.ap-northeast-1.es.amazonaws.com")
     ->setPath("/index_name")
     ->setMethod("DELETE")
-    ->execute();
+    ->send();
 ```

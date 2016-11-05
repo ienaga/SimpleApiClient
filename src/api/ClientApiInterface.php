@@ -6,7 +6,7 @@ interface ClientApiInterface
 {
     /**
      * send
-     * @return json
+     * @return array
      */
     public function send();
 
