@@ -498,26 +498,24 @@ class Client implements ClientApiInterface
     {
         if (count($this->getQuery()) > 0) {
 
-            $sendData = $this->createJson();
+            $json = $this->createJson();
 
             switch ($this->getMethod()) {
                 default:
                     $this
-                        ->addOption(CURLOPT_POST, false)
-                        ->addOption(CURLOPT_PUT, false)
-                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
+                        ->addOption(CURLOPT_POSTFIELDS, $json);
                     break;
                 case "POST":
                     $this
-                        ->addHeader("Content-length", strlen($sendData))
+                        ->addHeader("Content-length", strlen($json))
                         ->addOption(CURLOPT_POST, true)
-                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
+                        ->addOption(CURLOPT_POSTFIELDS, $json);
                     break;
                 case "PUT" :
                     $this
-                        ->addHeader("Content-length", strlen($sendData))
+                        ->addHeader("Content-length", strlen($json))
                         ->addOption(CURLOPT_PUT, true)
-                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
+                        ->addOption(CURLOPT_POSTFIELDS, $json);
                     break;
             }
         }
@@ -531,7 +529,7 @@ class Client implements ClientApiInterface
     {
         $this
             ->initOption()
-            ->createJson();
+            ->buildQuery();
 
         curl_setopt_array($this->getConnection(), $this->getOptions());
     }
@@ -576,7 +574,7 @@ class Client implements ClientApiInterface
         // init
         $this
             ->initOption()
-            ->createJson();
+            ->buildQuery();
 
         $curl = curl_init();
         curl_setopt_array($curl, $this->getOptions());
@@ -606,7 +604,6 @@ class Client implements ClientApiInterface
         } while ($active);
 
         // remove multi handle
-        error_log(count($this->curls));
         foreach ($this->curls as $curl) {
             curl_multi_remove_handle($this->getMultiHandle(), $curl);
             curl_close($curl);
