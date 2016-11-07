@@ -11,14 +11,23 @@ interface ClientApiInterface
     public function send();
 
     /**
-     * @param  $curl
      * @return void
      */
-    public function preSend($curl);
+    public function preSend();
+
+    /**
+     * post send (reset)
+     */
+    public function postSend();
 
     /**
      * execute multi
      */
     public function multi();
+
+    /**
+     * post multi
+     */
+    public function postMulti();
 
 }

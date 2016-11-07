@@ -3,7 +3,6 @@
 namespace SimpleApi;
 
 require_once __DIR__ . "/ClientApiInterface.php";
-require_once __DIR__ . "/../exception/ApiException.php";
 
 class Client implements ClientApiInterface
 {
@@ -19,6 +18,11 @@ class Client implements ClientApiInterface
     protected $path = "";
 
     /**
+     * @var int
+     */
+    protected $port = 0;
+
+    /**
      * @var string
      */
     protected $method = "GET";
@@ -31,7 +35,7 @@ class Client implements ClientApiInterface
     /**
      * @var int
      */
-    protected $connect_time_out = 5;
+    protected $connect_time_out = 3;
 
     /**
      * @var string
@@ -59,6 +63,12 @@ class Client implements ClientApiInterface
     protected $parameters = array();
 
     /**
+     * @var null
+     */
+    protected $curl = null;
+
+    /**
+     * multi handle
      * @var null
      */
     protected $mh = null;
@@ -104,6 +114,58 @@ class Client implements ClientApiInterface
         if (isset($config["charset"])) {
             $this->setCharset($config["charset"]);
         }
+
+        if (isset($config["port"])) {
+            $this->setPort($config["port"]);
+        }
+    }
+
+    /**
+     * @return null
+     */
+    public function getConnection()
+    {
+        return $this->curl;
+    }
+
+    /**
+     * @param $curl
+     */
+    public function setConnection($curl = null)
+    {
+        $this->curl = $curl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasConnection()
+    {
+        return ($this->curl !== null);
+    }
+
+    /**
+     * @return null
+     */
+    public function getMultiHandle()
+    {
+        return $this->mh;
+    }
+
+    /**
+     * @param $mh
+     */
+    public function setMultiHandle($mh = null)
+    {
+        $this->mh = $mh;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasMultiHandle()
+    {
+        return ($this->mh !== null);
     }
 
     /**
@@ -139,6 +201,24 @@ class Client implements ClientApiInterface
     public function setCharset($charset = "UTF-8")
     {
         $this->charset = $charset;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPort()
+    {
+        return $this->port;
+    }
+
+    /**
+     * @param  int $port
+     * @return $this
+     */
+    public function setPort($port = 0)
+    {
+        $this->port = $port;
         return $this;
     }
 
@@ -226,6 +306,15 @@ class Client implements ClientApiInterface
     }
 
     /**
+     * @return $this
+     */
+    public function clearParameters()
+    {
+        $this->parameters = array();
+        return $this;
+    }
+
+    /**
      * @return string JSON
      */
     public function createJson()
@@ -263,11 +352,12 @@ class Client implements ClientApiInterface
     }
 
     /**
-     * clear
+     * @return $this
      */
     public function clearHeader()
     {
         $this->headers = array();
+        return $this;
     }
 
     /**
@@ -300,7 +390,7 @@ class Client implements ClientApiInterface
      * @param  int   $connect_time_out
      * @return $this
      */
-    public function setConnectTimeOut($connect_time_out = 5)
+    public function setConnectTimeOut($connect_time_out = 3)
     {
         $this->connect_time_out = $connect_time_out;
         return $this;
@@ -336,11 +426,12 @@ class Client implements ClientApiInterface
     }
 
     /**
-     * clear options
+     * @return $this
      */
     public function clearOptions()
     {
         $this->options = array();
+        return $this;
     }
 
     /**
@@ -358,33 +449,53 @@ class Client implements ClientApiInterface
     /**
      * @return string
      */
-    public function getURL()
+    public function buildURL()
     {
         $url = $this->getEndPoint();
-        if ($this->getPath()) {
-            $url .= $this->getPath();
+        if (mb_substr($url, -1) === "/") {
+            $url = substr($url, 0, -1); // delete end slash
         }
+
+        // port
+        $port = $this->getPort();
+        if ($port) {
+            $url .= ":". $port;
+        }
+
+        // path
+        $path = $this->getPath();
+        if ($path) {
+            if (mb_substr($path, 0, 1) !== "/") {
+                $path = "/". $path;
+            }
+            $url .= $path;
+        }
+
         return $url;
     }
 
     /**
-     * @param  $curl
-     * @return void
+     * @return $this
      */
-    public function preSend($curl)
+    public function initOption()
     {
-        // init
-        $this
+        return $this
             ->addHeader("Content-Type",         trim($this->getContentType()))
             ->addOption(CURLOPT_ENCODING,       $this->getCharset())
             ->addOption(CURLOPT_TIMEOUT,        $this->getTimeOut())
             ->addOption(CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeOut())
             ->addOption(CURLOPT_RETURNTRANSFER, true)
-            ->addOption(CURLOPT_URL,            $this->getURL())
+            ->addOption(CURLOPT_POSTFIELDS,     "")
+            ->addOption(CURLOPT_URL,            $this->buildURL())
             ->addOption(CURLOPT_CUSTOMREQUEST,  $this->getMethod())
             ->addOption(CURLOPT_HTTPHEADER,     $this->getHeaders());
+    }
 
-        // query
+    /**
+     * @return $this
+     */
+    public function buildQuery()
+    {
         switch ($this->getMethod()) {
             case "POST":
             case "PUT" :
@@ -397,8 +508,30 @@ class Client implements ClientApiInterface
                 }
                 break;
         }
+        return $this;
+    }
 
-        curl_setopt_array($curl, $this->getOptions());
+    /**
+     * @return void
+     */
+    public function preSend()
+    {
+        $this
+            ->initOption()
+            ->buildQuery();
+
+        curl_setopt_array($this->getConnection(), $this->getOptions());
+    }
+
+    /**
+     * post send (reset)
+     */
+    public function postSend()
+    {
+        $this
+            ->clearParameters()
+            ->clearHeader()
+            ->clearOptions();
     }
 
     /**
@@ -407,17 +540,13 @@ class Client implements ClientApiInterface
      */
     public function send()
     {
-        $curl = curl_init();
-
-        $this->preSend($curl);
-
-        try {
-            $json = json_decode(curl_exec($curl), true);
-        } catch (ApiException $e) {
-            $json = array("exception" => $e->getMessage());
+        if (!$this->hasConnection()) {
+            $this->setConnection(curl_init());
         }
 
-        curl_close($curl);
+        $this->preSend();
+        $json = json_decode(curl_exec($this->getConnection()), true);
+        $this->postSend();
 
         return $json;
     }
@@ -425,19 +554,31 @@ class Client implements ClientApiInterface
     /**
      * add multi handle
      */
-    public function addHandle()
+    public function append()
     {
-        if ($this->mh === null) {
-            $this->mh = curl_multi_init();
+        if (!$this->hasMultiHandle()) {
+            $this->setMultiHandle(curl_multi_init());
         }
 
+        // init
+        $this
+            ->initOption()
+            ->buildQuery();
+
         $curl = curl_init();
-
-        $this->preSend($curl);
-
-        curl_multi_add_handle($this->mh, $curl);
+        curl_setopt_array($curl, $this->getOptions());
+        curl_multi_add_handle($this->getMultiHandle(), $curl);
 
         $this->curls[] = $curl;
+    }
+
+    /**
+     * post multi
+     */
+    public function postMulti()
+    {
+        $this->setMultiHandle(null);
+        $this->curls = array();
     }
 
     /**
@@ -448,15 +589,39 @@ class Client implements ClientApiInterface
         $active = null;
 
         do {
-            curl_multi_exec($this->mh, $active);
+            curl_multi_exec($this->getMultiHandle(), $active);
         } while ($active);
 
         // remove multi handle
+        error_log(count($this->curls));
         foreach ($this->curls as $curl) {
-            curl_multi_remove_handle($this->mh, $curl);
+            curl_multi_remove_handle($this->getMultiHandle(), $curl);
             curl_close($curl);
         }
 
-        curl_multi_close($this->mh);
+        curl_multi_close($this->getMultiHandle());
+
+        $this->postMulti();
+    }
+
+    /**
+     * destruct
+     */
+    public function __destruct()
+    {
+        if ($this->hasConnection()) {
+            curl_close($this->getConnection());
+        }
+
+        if ($this->hasMultiHandle()) {
+            $mh = $this->getMultiHandle();
+
+            foreach ($this->curls as $curl) {
+                curl_multi_remove_handle($mh, $curl);
+                curl_close($curl);
+            }
+
+            curl_multi_close($mh);
+        }
     }
 }
