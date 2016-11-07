@@ -60,7 +60,7 @@ class Client implements ClientApiInterface
     /**
      * @var array
      */
-    protected $parameters = array();
+    protected $query = array();
 
     /**
      * @var null
@@ -281,45 +281,37 @@ class Client implements ClientApiInterface
      * @param  mixed  $value
      * @return $this
      */
-    public function add($key, $value = "")
+    public function addQuery($key, $value = "")
     {
-        $this->parameters[$key] = $value;
+        $this->query[$key] = $value;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getParameters()
+    public function getQuery()
     {
-        return $this->parameters;
+        return $this->query;
     }
 
     /**
-     * @param  array $parameters
+     * @param  array $query
      * @return $this
      */
-    public function setParameters($parameters = array())
+    public function setQuery($query = array())
     {
-        $this->parameters = $parameters;
+        $this->query = $query;
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function clearParameters()
+    public function clearQuery()
     {
-        $this->parameters = array();
+        $this->query = array();
         return $this;
-    }
-
-    /**
-     * @return string JSON
-     */
-    public function createJson()
-    {
-        return json_encode($this->getParameters());
     }
 
     /**
@@ -492,21 +484,42 @@ class Client implements ClientApiInterface
     }
 
     /**
+     * @return string
+     */
+    public function createJson()
+    {
+        return json_encode($this->getQuery());
+    }
+
+    /**
      * @return $this
      */
     public function buildQuery()
     {
-        switch ($this->getMethod()) {
-            case "POST":
-            case "PUT" :
-                if (count($this->getParameters()) > 0) {
-                    $sendData = $this->createJson();
+        if (count($this->getQuery()) > 0) {
+
+            $sendData = $this->createJson();
+
+            switch ($this->getMethod()) {
+                default:
                     $this
-                        ->addHeader("Content-length",   strlen($sendData))
-                        ->addOption(CURLOPT_POST,       true)
+                        ->addOption(CURLOPT_POST, false)
+                        ->addOption(CURLOPT_PUT, false)
                         ->addOption(CURLOPT_POSTFIELDS, $sendData);
-                }
-                break;
+                    break;
+                case "POST":
+                    $this
+                        ->addHeader("Content-length", strlen($sendData))
+                        ->addOption(CURLOPT_POST, true)
+                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
+                    break;
+                case "PUT" :
+                    $this
+                        ->addHeader("Content-length", strlen($sendData))
+                        ->addOption(CURLOPT_PUT, true)
+                        ->addOption(CURLOPT_POSTFIELDS, $sendData);
+                    break;
+            }
         }
         return $this;
     }
@@ -518,7 +531,7 @@ class Client implements ClientApiInterface
     {
         $this
             ->initOption()
-            ->buildQuery();
+            ->createJson();
 
         curl_setopt_array($this->getConnection(), $this->getOptions());
     }
@@ -529,7 +542,7 @@ class Client implements ClientApiInterface
     public function postSend()
     {
         $this
-            ->clearParameters()
+            ->clearQuery()
             ->clearHeader()
             ->clearOptions();
     }
@@ -563,7 +576,7 @@ class Client implements ClientApiInterface
         // init
         $this
             ->initOption()
-            ->buildQuery();
+            ->createJson();
 
         $curl = curl_init();
         curl_setopt_array($curl, $this->getOptions());
