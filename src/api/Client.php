@@ -306,6 +306,16 @@ class Client implements ClientApiInterface
     }
 
     /**
+     * @param  array $query
+     * @return $this
+     */
+    public function mergeQuery($query = array())
+    {
+        $this->query = array_merge($this->query, $query);
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function clearQuery()
@@ -506,15 +516,10 @@ class Client implements ClientApiInterface
                         ->addOption(CURLOPT_POSTFIELDS, $json);
                     break;
                 case "POST":
-                    $this
-                        ->addHeader("Content-length", strlen($json))
-                        ->addOption(CURLOPT_POST, true)
-                        ->addOption(CURLOPT_POSTFIELDS, $json);
-                    break;
                 case "PUT" :
                     $this
                         ->addHeader("Content-length", strlen($json))
-                        ->addOption(CURLOPT_PUT, true)
+                        ->addOption(CURLOPT_POST, true)
                         ->addOption(CURLOPT_POSTFIELDS, $json);
                     break;
             }
