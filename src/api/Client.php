@@ -63,6 +63,11 @@ class Client implements ClientApiInterface
     protected $query = array();
 
     /**
+     * @var array
+     */
+    protected $parameter = array();
+
+    /**
      * @var null
      */
     protected $curl = null;
@@ -327,6 +332,33 @@ class Client implements ClientApiInterface
     /**
      * @return array
      */
+    public function getParameter()
+    {
+        return $this->parameter;
+    }
+
+    /**
+     * @param array $parameter
+     */
+    public function setParameter($parameter)
+    {
+        $this->parameter = $parameter;
+    }
+
+    /**
+     * @param  string $key
+     * @param  string $value
+     * @return $this
+     */
+    public function addParameter($key, $value = "")
+    {
+        $this->parameter[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->headers;
@@ -471,6 +503,20 @@ class Client implements ClientApiInterface
                 $path = "/". $path;
             }
             $url .= $path;
+        }
+
+        // delete end slash
+        if (mb_substr($url, -1) === "/") {
+            $url = substr($url, 0, -1);
+        }
+
+        $parameter = $this->getParameter();
+        if (count($parameter)) {
+            $parameters = array();
+            foreach ($parameter as $key => $value) {
+                $parameters[] = $key ."=". $value;
+            }
+            $url .= "?". implode("&", $parameters);
         }
 
         return $url;

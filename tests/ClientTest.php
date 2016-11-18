@@ -94,4 +94,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($json["delete"], "OK");
     }
 
+    /**
+     * parameter test
+     */
+    public function testBuildURL()
+    {
+        $simpleApi = new \SimpleApi\Client($this->config);
+        $url = $simpleApi
+            ->addParameter("a", "1")
+            ->addParameter("b", "2")
+            ->addParameter("c", "3")
+            ->buildURL();
+
+        list($path, $param) = explode("?", $url);
+        $this->assertEquals($path,  self::END_POINT);
+        $this->assertEquals($param, "a=1&b=2&c=3");
+    }
+
 }
