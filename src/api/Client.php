@@ -246,6 +246,15 @@ class Client implements ClientApiInterface
     }
 
     /**
+     * @return $this
+     */
+    public function clearMethod()
+    {
+        $this->method = "GET";
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getEndPoint()
@@ -591,6 +600,7 @@ class Client implements ClientApiInterface
     public function postSend()
     {
         $this
+            ->clearMethod()
             ->clearBody()
             ->clearHeader()
             ->clearOptions();
