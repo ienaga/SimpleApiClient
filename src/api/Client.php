@@ -60,7 +60,7 @@ class Client implements ClientApiInterface
     /**
      * @var array
      */
-    protected $query = array();
+    protected $body = array();
 
     /**
      * @var array
@@ -286,46 +286,46 @@ class Client implements ClientApiInterface
      * @param  mixed  $value
      * @return $this
      */
-    public function addQuery($key, $value = "")
+    public function addBody($key, $value = "")
     {
-        $this->query[$key] = $value;
+        $this->body[$key] = $value;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getQuery()
+    public function getBody()
     {
-        return $this->query;
+        return $this->body;
     }
 
     /**
-     * @param  array $query
+     * @param  array $body
      * @return $this
      */
-    public function setQuery($query = array())
+    public function setBody($body = array())
     {
-        $this->query = $query;
+        $this->body = $body;
         return $this;
     }
 
     /**
-     * @param  array $query
+     * @param  array $body
      * @return $this
      */
-    public function mergeQuery($query = array())
+    public function mergeBody($body = array())
     {
-        $this->query = array_merge($this->query, $query);
+        $this->body = array_merge($this->body, $body);
         return $this;
     }
 
     /**
      * @return $this
      */
-    public function clearQuery()
+    public function clearBody()
     {
-        $this->query = array();
+        $this->body = array();
         return $this;
     }
 
@@ -544,15 +544,15 @@ class Client implements ClientApiInterface
      */
     public function createJson()
     {
-        return json_encode($this->getQuery());
+        return json_encode($this->getBody());
     }
 
     /**
      * @return $this
      */
-    public function buildQuery()
+    public function buildBody()
     {
-        if (count($this->getQuery()) > 0) {
+        if (count($this->getBody()) > 0) {
 
             $json = $this->createJson();
 
@@ -580,7 +580,7 @@ class Client implements ClientApiInterface
     {
         $this
             ->initOption()
-            ->buildQuery();
+            ->buildBody();
 
         curl_setopt_array($this->getConnection(), $this->getOptions());
     }
@@ -591,7 +591,7 @@ class Client implements ClientApiInterface
     public function postSend()
     {
         $this
-            ->clearQuery()
+            ->clearBody()
             ->clearHeader()
             ->clearOptions();
     }
@@ -625,7 +625,7 @@ class Client implements ClientApiInterface
         // init
         $this
             ->initOption()
-            ->buildQuery();
+            ->buildBody();
 
         $curl = curl_init();
         curl_setopt_array($curl, $this->getOptions());

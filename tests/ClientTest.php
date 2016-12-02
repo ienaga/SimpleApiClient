@@ -45,7 +45,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $simpleApi = new \SimpleApi\Client($this->config);
         $json = $simpleApi
             ->setMethod("POST")
-            ->addQuery("post", "test")
+            ->addBody("post", "test")
             ->send();
 
         $this->assertArrayHasKey("post", $json);
