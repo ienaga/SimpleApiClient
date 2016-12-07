@@ -511,6 +511,9 @@ class Client implements ClientApiInterface
             if (mb_substr($path, 0, 1) !== "/") {
                 $path = "/". $path;
             }
+            if (mb_substr($path, -1) === "/") {
+                $path = substr($path, 0, -1); // delete end slash
+            }
             $url .= $path;
         }
 

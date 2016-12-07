@@ -95,9 +95,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * path test
+     */
+    public function testPath()
+    {
+        $simpleApi = new \SimpleApi\Client($this->config);
+
+        $url = $simpleApi
+            ->setPath("/a/b/c/")
+            ->buildURL();
+
+        $this->assertEquals($url, self::END_POINT ."/a/b/c");
+    }
+
+    /**
      * parameter test
      */
-    public function testBuildURL()
+    public function testParameter()
     {
         $simpleApi = new \SimpleApi\Client($this->config);
         $url = $simpleApi
