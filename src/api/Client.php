@@ -223,7 +223,7 @@ class Client implements ClientApiInterface
      */
     public function setPort($port = 0)
     {
-        $this->port = $port;
+        $this->port = (int) $port;
         return $this;
     }
 
@@ -349,7 +349,7 @@ class Client implements ClientApiInterface
     /**
      * @param array $parameter
      */
-    public function setParameter($parameter)
+    public function setParameter($parameter = array())
     {
         $this->parameter = $parameter;
     }
@@ -361,7 +361,7 @@ class Client implements ClientApiInterface
      */
     public function addParameter($key, $value = "")
     {
-        $this->parameter[$key] = $value;
+        $this->parameter[$key] = (string) $value;
         return $this;
     }
 
@@ -377,7 +377,7 @@ class Client implements ClientApiInterface
      * @param  array $headers
      * @return $this
      */
-    public function setHeaders($headers)
+    public function setHeaders($headers = array())
     {
         $this->headers = $headers;
         return $this;
@@ -517,16 +517,11 @@ class Client implements ClientApiInterface
             $url .= $path;
         }
 
-        // delete end slash
-        if (mb_substr($url, -1) === "/") {
-            $url = substr($url, 0, -1);
-        }
-
         $parameter = $this->getParameter();
         if (count($parameter)) {
             $parameters = array();
             foreach ($parameter as $key => $value) {
-                $parameters[] = $key ."=". $value;
+                $parameters[] = $key ."=". urlencode($value);
             }
             $url .= "?". implode("&", $parameters);
         }
