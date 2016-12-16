@@ -135,7 +135,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         try {
             $simpleApi->send();
         } catch (Exception $e) {
-            $this->assertEquals($e->getMessage(), "Could not resolve host: 404.error");
+            $this->addToAssertionCount($e->getMessage(), "Couldn't resolve host '404.error'");
         }
     }
 
