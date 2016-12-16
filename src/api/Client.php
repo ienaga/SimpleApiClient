@@ -3,6 +3,9 @@
 namespace SimpleApi;
 
 require_once __DIR__ . "/ClientApiInterface.php";
+require_once __DIR__ . "/../exception/SimpleApiException.php";
+
+use SimpleApi\Exception\SimpleApiException;
 
 class Client implements ClientApiInterface
 {
@@ -596,8 +599,8 @@ class Client implements ClientApiInterface
     }
 
     /**
-     * send
-     * @return array
+     * @return mixed
+     * @throws SimpleApiException
      */
     public function send()
     {
@@ -606,7 +609,16 @@ class Client implements ClientApiInterface
         }
 
         $this->preSend();
-        $json = json_decode(curl_exec($this->getConnection()), true);
+
+        $ch = $this->getConnection();
+
+        // execute
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            throw new SimpleApiException(curl_error($ch));
+        }
+
+        $json = json_decode($response, true);
         $this->postSend();
 
         return $json;

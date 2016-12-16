@@ -124,4 +124,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($param, "a=1&b=2&c=3");
     }
 
+    /**
+     * error test
+     */
+    public function testError()
+    {
+        $this->config["end_point"] = "https://404.error";
+        $simpleApi = new \SimpleApi\Client($this->config);
+
+        try {
+            $simpleApi->send();
+        } catch (Exception $e) {
+            $this->assertEquals($e->getMessage(), "Could not resolve host: 404.error");
+        }
+    }
+
 }
