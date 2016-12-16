@@ -34,7 +34,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey("get", $json);
         $this->assertEquals($json["get"], "OK");
-
     }
 
     /**

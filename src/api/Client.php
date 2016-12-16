@@ -562,20 +562,11 @@ class Client implements ClientApiInterface
         if (count($this->getBody()) > 0) {
 
             $json = $this->createJson();
+            $this
+                ->addHeader("Content-length", strlen($json))
+                ->addOption(CURLOPT_POST, true)
+                ->addOption(CURLOPT_POSTFIELDS, $json);
 
-            switch ($this->getMethod()) {
-                default:
-                    $this
-                        ->addOption(CURLOPT_POSTFIELDS, $json);
-                    break;
-                case "POST":
-                case "PUT" :
-                    $this
-                        ->addHeader("Content-length", strlen($json))
-                        ->addOption(CURLOPT_POST, true)
-                        ->addOption(CURLOPT_POSTFIELDS, $json);
-                    break;
-            }
         }
         return $this;
     }
