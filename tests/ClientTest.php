@@ -1,11 +1,9 @@
 <?php
 
-
 require_once __DIR__ . "/../src/api/Client.php";
+require __DIR__ . "/../vendor/autoload.php";
 
-use \PHPUnit\Framework\TestCase;
-
-class ClientTest extends TestCase
+class ClientTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
