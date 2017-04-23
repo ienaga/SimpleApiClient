@@ -3,8 +3,9 @@
 
 require_once __DIR__ . "/../src/api/Client.php";
 
+use \PHPUnit_Framework_TestCase;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends PHPUnit_Framework_TestCase
 {
 
     /**
