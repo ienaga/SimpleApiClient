@@ -2,10 +2,12 @@
 
 require_once __DIR__ . "/../src/api/Client.php";
 
-if (!class_exists("\\PHPUnit\\Framework\\TestCase") &&
-    class_exists("\\PHPUnit_Framework_TestCase")) {
-    class_alias("\\PHPUnit_Framework_TestCase", "\\PHPUnit\\Framework\\TestCase");
+if (!class_exists('\PHPUnit\Framework\TestCase') &&
+    class_exists('\PHPUnit_Framework_TestCase')) {
+    class_alias('\PHPUnit_Framework_TestCase', '\PHPUnit\Framework\TestCase');
 }
+
+use \PHPUnit_Framework_TestCase;
 
 class ClientTest extends PHPUnit_Framework_TestCase
 {
