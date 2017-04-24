@@ -538,16 +538,16 @@ class Client implements ClientApiInterface
     public function initOption()
     {
         return $this
+            ->addOption(CURLOPT_RETURNTRANSFER, true)
+            ->addOption(CURLOPT_FORBID_REUSE,   true)
+            ->addOption(CURLOPT_POSTFIELDS,     "")
+            ->addOption(CURLOPT_SSLVERSION,     1)
             ->addHeader("Content-Type",         trim($this->getContentType()))
             ->addOption(CURLOPT_ENCODING,       $this->getCharset())
             ->addOption(CURLOPT_TIMEOUT,        $this->getTimeOut())
             ->addOption(CURLOPT_CONNECTTIMEOUT, $this->getConnectTimeOut())
-            ->addOption(CURLOPT_RETURNTRANSFER, true)
-            ->addOption(CURLOPT_POSTFIELDS,     "")
             ->addOption(CURLOPT_URL,            $this->buildURL())
             ->addOption(CURLOPT_CUSTOMREQUEST,  $this->getMethod())
-            ->addOption(CURLOPT_SSLVERSION,     1)
-            ->addOption(CURLOPT_FORBID_REUSE,   true)
             ->addOption(CURLOPT_HTTPHEADER,     $this->getHeaders());
     }
 
