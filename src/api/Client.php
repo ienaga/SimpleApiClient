@@ -546,7 +546,8 @@ class Client implements ClientApiInterface
             ->addOption(CURLOPT_POSTFIELDS,     "")
             ->addOption(CURLOPT_URL,            $this->buildURL())
             ->addOption(CURLOPT_CUSTOMREQUEST,  $this->getMethod())
-            ->addOption(CURLOPT_SSL_VERIFYPEER, false)
+            ->addOption(CURLOPT_SSLVERSION,     1)
+            ->addOption(CURLOPT_SSL_CIPHER_LIST,"TLSv1")
             ->addOption(CURLOPT_HTTPHEADER,     $this->getHeaders());
     }
 
