@@ -616,8 +616,7 @@ class Client implements ClientApiInterface
 
         // execute
         $response = curl_exec($ch);
-        if ($no = curl_errno($ch)) {
-            error_log(curl_strerror($no));
+        if (curl_errno($ch)) {
             error_log(var_export(curl_getinfo($ch)));
             throw new SimpleApiException(curl_error($ch));
         }
