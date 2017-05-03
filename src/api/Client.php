@@ -540,6 +540,8 @@ class Client implements ClientApiInterface
         return $this
             ->addOption(CURLOPT_RETURNTRANSFER, true)
             ->addOption(CURLOPT_FORBID_REUSE,   true)
+            ->addOption(CURLOPT_SSL_VERIFYPEER, false)
+            ->addOption(CURLOPT_SSL_VERIFYHOST, false)
             ->addOption(CURLOPT_POSTFIELDS,     "")
             ->addOption(CURLOPT_SSLVERSION,     1)
             ->addHeader("Content-Type",         trim($this->getContentType()))
