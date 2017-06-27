@@ -616,10 +616,16 @@ class Client implements ClientApiInterface
         // execute
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            throw new SimpleApiException(
+//            throw new SimpleApiException(
+//                curl_error($ch) ."\n".
+//                var_export(curl_getinfo($ch))
+//            );
+
+            error_log(
                 curl_error($ch) ."\n".
                 var_export(curl_getinfo($ch))
             );
+
         }
 
         $json = json_decode($response, true);

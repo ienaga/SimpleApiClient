@@ -128,19 +128,19 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($param, "a=1&b=2&c=3");
     }
 
-    /**
-     * error test
-     */
-    public function testError()
-    {
-        $this->config["end_point"] = "https://404.error";
-        $simpleApi = new \SimpleApi\Client($this->config);
-
-        try {
-            $simpleApi->send();
-        } catch (Exception $e) {
-            $this->assertTrue(is_string($e->getMessage()));
-        }
-    }
+//    /**
+//     * error test
+//     */
+//    public function testError()
+//    {
+//        $this->config["end_point"] = "https://404.error";
+//        $simpleApi = new \SimpleApi\Client($this->config);
+//
+//        try {
+//            $simpleApi->send();
+//        } catch (Exception $e) {
+//            $this->assertTrue(is_string($e->getMessage()));
+//        }
+//    }
 
 }
