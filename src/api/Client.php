@@ -623,7 +623,7 @@ class Client implements ClientApiInterface
 
             error_log(
                 curl_error($ch) ."\n".
-                var_export(curl_getinfo($ch))
+                var_export(curl_getinfo($ch), true)
             );
 
         }
