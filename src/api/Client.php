@@ -33,12 +33,12 @@ class Client implements ClientApiInterface
     /**
      * @var int
      */
-    protected $time_out = 10;
+    protected $time_out = 60;
 
     /**
      * @var int
      */
-    protected $connect_time_out = 5;
+    protected $connect_time_out = 60;
 
     /**
      * @var string
