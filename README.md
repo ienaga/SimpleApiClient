@@ -2,7 +2,7 @@
 
 simple api library.
 
-[![Build Status](https://travis-ci.org/ienaga/SimpleApiClient.svg?branch=master)](https://travis-ci.org/ienaga/SimpleApiClient)
+[![UnitTest](https://github.com/ienaga/SimpleApiClient/actions/workflows/integration.yml/badge.svg)](https://github.com/ienaga/SimpleApiClient/actions/workflows/integration.yml)
 
 [![Latest Stable Version](https://poser.pugx.org/ienaga/simple-api-client/v/stable)](https://packagist.org/packages/ienaga/simple-api-client) [![Total Downloads](https://poser.pugx.org/ienaga/simple-api-client/downloads)](https://packagist.org/packages/ienaga/simple-api-client) [![Latest Unstable Version](https://poser.pugx.org/ienaga/simple-api-client/v/unstable)](https://packagist.org/packages/ienaga/simple-api-client) [![License](https://poser.pugx.org/ienaga/simple-api-client/license)](https://packagist.org/packages/ienaga/simple-api-client)
 
