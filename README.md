@@ -3,7 +3,7 @@
 simple api library.
 
 [![UnitTest](https://github.com/ienaga/SimpleApiClient/actions/workflows/integration.yml/badge.svg)](https://github.com/ienaga/SimpleApiClient/actions/workflows/integration.yml)
-
+[![PHPMD](https://github.com/ienaga/SimpleApiClient/actions/workflows/phpmd.yml/badge.svg)](https://github.com/ienaga/SimpleApiClient/actions/workflows/phpmd.yml)
 [![Latest Stable Version](https://poser.pugx.org/ienaga/simple-api-client/v/stable)](https://packagist.org/packages/ienaga/simple-api-client) [![Total Downloads](https://poser.pugx.org/ienaga/simple-api-client/downloads)](https://packagist.org/packages/ienaga/simple-api-client) [![Latest Unstable Version](https://poser.pugx.org/ienaga/simple-api-client/v/unstable)](https://packagist.org/packages/ienaga/simple-api-client) [![License](https://poser.pugx.org/ienaga/simple-api-client/license)](https://packagist.org/packages/ienaga/simple-api-client)
 
 
