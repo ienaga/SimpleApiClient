@@ -1,0 +1,26 @@
+name: Integration UnitTest
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '5.4', '5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1' ]
+    name: PHP ${{ matrix.php }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: nanasess/setup-php@v3
+        with:
+          php-version: ${{ matrix.php }}
+      - run: composer install
+      - run: php vendor/bin/phpunit
+
